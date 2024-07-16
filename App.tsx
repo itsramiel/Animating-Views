@@ -1,11 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, Dimensions, StyleSheet, Text, View } from "react-native";
 import Animated, {
   EntryAnimationsValues,
   ExitAnimationsValues,
   LayoutAnimation,
   LinearTransition,
+  useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
 
@@ -33,25 +34,31 @@ function EnterAnimation(values: EntryAnimationsValues): LayoutAnimation {
   };
 }
 
+const availableWidth = Dimensions.get("window").width - 32 - 10;
 export default function App() {
   const [isOnlyRight, setIsOnlyRight] = useState(true);
+
+  const leftStyle = useAnimatedStyle(() => {
+    return {
+      width: withTiming(isOnlyRight ? 0 : availableWidth / 2),
+    };
+  }, [isOnlyRight]);
+
+  const rightStyle = useAnimatedStyle(() => {
+    return {
+      width: withTiming(isOnlyRight ? availableWidth : availableWidth / 2),
+    };
+  }, [isOnlyRight]);
 
   return (
     <View style={styles.screen}>
       <View style={styles.container}>
-        {isOnlyRight ? null : (
-          <Animated.View
-            exiting={ExitAnimation}
-            entering={EnterAnimation}
-            style={styles.button}
-          >
-            <Text style={styles.text}>Left</Text>
-          </Animated.View>
-        )}
-        <Animated.View
-          style={styles.button}
-          layout={LinearTransition.duration(1000)}
-        >
+        <Animated.View style={[styles.button, leftStyle]}>
+          <Text style={styles.text} numberOfLines={1}>
+            Left
+          </Text>
+        </Animated.View>
+        <Animated.View style={[styles.button, rightStyle]}>
           <Text style={styles.text}>Right</Text>
         </Animated.View>
       </View>
@@ -74,9 +81,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "red",
-    flex: 1,
     alignItems: "center",
-    padding: 16,
+    paddingVertical: 16,
     borderRadius: 30,
   },
   text: {
