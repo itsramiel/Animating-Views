@@ -1,17 +1,23 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
 
 export default function App() {
+  const [isOnlyRight, setIsOnlyRight] = useState(true);
+
   return (
     <View style={styles.screen}>
       <View style={styles.container}>
-        <View style={styles.button}>
-          <Text style={styles.text}>Left</Text>
-        </View>
+        {isOnlyRight ? null : (
+          <View style={styles.button}>
+            <Text style={styles.text}>Left</Text>
+          </View>
+        )}
         <View style={styles.button}>
           <Text style={styles.text}>Right</Text>
         </View>
       </View>
+      <Button title="Toggle" onPress={() => setIsOnlyRight(!isOnlyRight)} />
       <StatusBar style="auto" />
     </View>
   );
