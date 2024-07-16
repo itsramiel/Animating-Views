@@ -16,7 +16,7 @@ function ExitAnimation(values: ExitAnimationsValues): LayoutAnimation {
       width: values.currentWidth,
     },
     animations: {
-      width: withTiming(0, { duration: 5000 }),
+      width: withTiming(0, { duration: 1000 }),
     },
   };
 }
@@ -28,7 +28,7 @@ function EnterAnimation(values: EntryAnimationsValues): LayoutAnimation {
       width: 0,
     },
     animations: {
-      width: withTiming(values.targetWidth, { duration: 5000 }),
+      width: withTiming(values.targetWidth, { duration: 1000 }),
     },
   };
 }
@@ -50,7 +50,7 @@ export default function App() {
         )}
         <Animated.View
           style={styles.button}
-          layout={LinearTransition.duration(5000)}
+          layout={LinearTransition.duration(1000)}
         >
           <Text style={styles.text}>Right</Text>
         </Animated.View>
